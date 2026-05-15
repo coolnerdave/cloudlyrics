@@ -56,8 +56,8 @@ The extension requests the following permissions:
 
 ## Changes to this policy
 
-If the extension changes in a way that affects privacy, this document will be updated. The full version history is visible in the [GitHub commit log](https://github.com/coolnerdave/cloudlyrics/commits/main/PRIVACY.md).
+If the extension changes in a way that affects privacy, this document will be updated.
 
 ## Contact
 
-Questions or concerns: [github.com/coolnerdave/cloudlyrics/issues](https://github.com/coolnerdave/cloudlyrics/issues) or coolnerdave@gmail.com
+Questions or concerns: [hello@cloudlyrics.org](mailto:hello@cloudlyrics.org)

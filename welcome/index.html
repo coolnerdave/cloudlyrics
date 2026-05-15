@@ -310,10 +310,14 @@
         return;
       }
 
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 10000);
       try {
         const res = await fetch(
-          `https://cloudlyrics-worker.thekidslush.workers.dev/key?session_id=${sessionId}`
+          `https://cloudlyrics-worker.thekidslush.workers.dev/key?session_id=${sessionId}`,
+          { signal: controller.signal }
         );
+        clearTimeout(timer);
         const data = await res.json();
 
         if (data.key) {
@@ -326,7 +330,11 @@
           throw new Error('No key returned');
         }
       } catch (e) {
-        keyDisplay.textContent = 'Could not load key — email hello@cloudlyrics.org with your order and we\'ll send it manually.';
+        clearTimeout(timer);
+        const msg = e.name === 'AbortError'
+          ? 'Request timed out — email hello@cloudlyrics.org with your order and we\'ll send it manually.'
+          : 'Could not load key — email hello@cloudlyrics.org with your order and we\'ll send it manually.';
+        keyDisplay.textContent = msg;
         keyDisplay.className = 'key-value error';
       }
     }

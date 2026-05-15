@@ -3,6 +3,9 @@ CLAUDE.md
 PROMPTER_NOTES.md
 .agents/
 
+# Claude Code
+.claude/
+
 # Proprietary source — not public
 content.js
 background.js
