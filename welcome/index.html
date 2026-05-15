@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to CloudLyrics Premium</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange: #ff5500;
+      --orange-dim: rgba(255, 85, 0, 0.12);
+      --bg: #0a0a0a;
+      --bg-2: #111111;
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #f0f0f0;
+      --text-muted: rgba(255, 255, 255, 0.45);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Manrope', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.6;
+    }
+
+    .glow {
+      position: fixed;
+      top: 30%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(255,85,0,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .card {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 520px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 48px 40px;
+      text-align: center;
+    }
+
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 15px;
+      color: var(--text-muted);
+      letter-spacing: -0.02em;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .logo-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--orange);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 14px;
+      border: 1px solid rgba(255,85,0,0.35);
+      border-radius: 100px;
+      background: var(--orange-dim);
+      color: var(--orange);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--orange);
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(32px, 6vw, 48px);
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      margin-bottom: 14px;
+    }
+
+    .sub {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 36px;
+    }
+
+    /* Key display */
+    .key-wrap {
+      background: rgba(255,85,0,0.06);
+      border: 1px solid rgba(255,85,0,0.25);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
+    }
+
+    .key-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 10px;
+    }
+
+    .key-value {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: clamp(18px, 4vw, 26px);
+      letter-spacing: 0.08em;
+      color: #fff;
+      word-break: break-all;
+      min-height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .key-value.loading {
+      color: var(--text-muted);
+      font-size: 14px;
+      font-family: 'Manrope', sans-serif;
+      font-weight: 400;
+      letter-spacing: 0;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    .key-value.error {
+      color: rgba(255,80,80,0.8);
+      font-size: 13px;
+      font-family: 'Manrope', sans-serif;
+      font-weight: 400;
+      letter-spacing: 0;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .copy-btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 100px;
+      border: none;
+      background: var(--orange);
+      color: #fff;
+      font-family: 'Manrope', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s;
+      margin-bottom: 28px;
+    }
+
+    .copy-btn:hover { background: #e64d00; box-shadow: 0 4px 24px rgba(255,85,0,0.4); }
+    .copy-btn:disabled { background: rgba(255,255,255,0.1); cursor: default; box-shadow: none; }
+    .copy-btn.copied { background: #1a9e5c; }
+
+    .steps {
+      text-align: left;
+      border-top: 1px solid var(--border);
+      padding-top: 28px;
+    }
+
+    .steps-title {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .step {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .step-num {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--orange-dim);
+      border: 1px solid rgba(255,85,0,0.25);
+      color: var(--orange);
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .step-text {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    .step-text strong { color: var(--text); font-weight: 500; }
+
+    .save-note {
+      margin-top: 20px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.25);
+      text-align: center;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="glow"></div>
+
+  <div class="card">
+    <div class="logo"><span class="logo-dot"></span>CloudLyrics</div>
+
+    <div class="badge"><span class="badge-dot"></span>Premium unlocked</div>
+
+    <h1>You're in.</h1>
+    <p class="sub">Your license key is below. Copy it and paste it into the extension to unlock everything.</p>
+
+    <div class="key-wrap">
+      <div class="key-label">Your license key</div>
+      <div class="key-value loading" id="key-display">Fetching your key…</div>
+    </div>
+
+    <button class="copy-btn" id="copy-btn" disabled>Copy key</button>
+
+    <div class="steps">
+      <div class="steps-title">How to activate</div>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text">Go to <strong>SoundCloud</strong> and play any track</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text">Click the <strong>CloudLyrics button</strong> → open fullscreen</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text">Click <strong>Style ▾</strong> → <strong>Unlock Premium</strong> → paste your key</div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-text">Done — visual themes and visualisations are yours forever</div>
+      </div>
+    </div>
+
+    <p class="save-note">Save this key somewhere safe — your email address<br>can also be used to retrieve it later.</p>
+  </div>
+
+  <script>
+    const keyDisplay = document.getElementById('key-display');
+    const copyBtn = document.getElementById('copy-btn');
+    let licenseKey = null;
+
+    async function fetchKey() {
+      const params = new URLSearchParams(window.location.search);
+      const sessionId = params.get('session_id');
+
+      if (!sessionId) {
+        keyDisplay.textContent = 'No session found. Please contact hello@cloudlyrics.org';
+        keyDisplay.className = 'key-value error';
+        return;
+      }
+
+      try {
+        const res = await fetch(
+          `https://cloudlyrics-worker.thekidslush.workers.dev/key?session_id=${sessionId}`
+        );
+        const data = await res.json();
+
+        if (data.key) {
+          licenseKey = data.key;
+          keyDisplay.textContent = licenseKey;
+          keyDisplay.className = 'key-value';
+          copyBtn.disabled = false;
+          tryAutoActivate(licenseKey);
+        } else {
+          throw new Error('No key returned');
+        }
+      } catch (e) {
+        keyDisplay.textContent = 'Could not load key — email hello@cloudlyrics.org with your order and we\'ll send it manually.';
+        keyDisplay.className = 'key-value error';
+      }
+    }
+
+    function tryAutoActivate(key) {
+      if (typeof chrome === 'undefined' || !chrome.runtime?.sendMessage) return;
+      try {
+        chrome.runtime.sendMessage(
+          'jbdcddljoojojilncpkkbpignjabnmfa',
+          { type: 'CL_ACTIVATE', key },
+          response => {
+            if (chrome.runtime.lastError) return; // extension not installed
+            if (response?.success) {
+              keyDisplay.textContent = '✓ Premium activated automatically!';
+              keyDisplay.className = 'key-value';
+              keyDisplay.style.color = '#1a9e5c';
+              copyBtn.textContent = 'You\'re all set';
+              copyBtn.disabled = true;
+              copyBtn.style.background = '#1a9e5c';
+            }
+          }
+        );
+      } catch (e) { /* extension not installed or not reachable */ }
+    }
+
+    copyBtn.addEventListener('click', async () => {
+      if (!licenseKey) return;
+      await navigator.clipboard.writeText(licenseKey);
+      copyBtn.textContent = 'Copied!';
+      copyBtn.classList.add('copied');
+      setTimeout(() => {
+        copyBtn.textContent = 'Copy key';
+        copyBtn.classList.remove('copied');
+      }, 2000);
+    });
+
+    fetchKey();
+  </script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+{
+  "appName":        { "message": "CloudLyrics — Текст песен для SoundCloud" },
+  "appDescription": { "message": "Синхронизированный текст для треков SoundCloud. Полноэкранный режим, информация об исполнителе и стили оформления." },
+
+  "btnLyrics":       { "message": "Текст" },
+  "btnArt":          { "message": "Обложка" },
+  "btnShareSnippet": { "message": "Сниппет" },
+  "btnStyle":        { "message": "Стиль ▾" },
+  "btnImmerse":      { "message": "Погружение" },
+  "btnExitImmerse":  { "message": "Выйти" },
+  "btnClose":        { "message": "Закрыть" },
+  "btnFullscreen":   { "message": "На весь экран" },
+  "btnMinimize":     { "message": "Свернуть" },
+  "btnDismiss":      { "message": "Закрыть" },
+  "btnOpenLyrics":   { "message": "Открыть текст" },
+  "btnReturn":       { "message": "Вернуться" },
+
+  "ariaBack":    { "message": "Назад 10 секунд" },
+  "ariaPause":   { "message": "Пауза прокрутки" },
+  "ariaForward": { "message": "Вперёд 10 секунд" },
+  "ariaSlower":  { "message": "Медленнее" },
+  "ariaFaster":  { "message": "Быстрее" },
+
+  "aboutArtist":   { "message": "Об исполнителе" },
+  "aboutTrack":    { "message": "О треке" },
+  "linkWikipedia": { "message": "Подробнее на Wikipedia →" },
+  "linkLastfm":    { "message": "Подробнее на Last.fm →" },
+  "linkMoreWiki":  { "message": "Ещё на Wikipedia →" },
+  "supportKofi":   { "message": "Поддержать CloudLyrics на Ko-Fi ☕" },
+
+  "upgradeBadge":    { "message": "Premium" },
+  "upgradeTitle":    { "message": "CloudLyrics Premium" },
+  "upgradeDesc":     { "message": "Разблокируй полный опыт — единоразовый платёж, навсегда." },
+  "upgradeFeature1": { "message": "Визуализации Synthwave, Embers, Sakura и Snow" },
+  "upgradeFeature2": { "message": "Темы Blur, Glitch, Spotlight, Typewriter и другие" },
+  "upgradeFeature3": { "message": "Пожизненный доступ — без подписки" },
+  "upgradeBtn":      { "message": "Разблокировать Premium — £3.99" },
+  "upgradeHaveKey":  { "message": "Уже есть ключ?" },
+  "upgradeActivate": { "message": "Активировать" },
+
+  "vizLiquid":       { "message": "Жидкость" },
+
+  "lyricsReady":     { "message": "Текст готов" },
+  "snippetCancel":   { "message": "Отмена" },
+  "snippetCopy":     { "message": "Копировать" },
+  "snippetPostX":    { "message": "Опубликовать в X" },
+  "snippetDownload": { "message": "Скачать" },
+  "snippetShare":    { "message": "Поделиться" }
+}

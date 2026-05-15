@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-site-verification" content="rO-FQapy6hOn-3kXKwSfHykb2V8A_PuApoFGfPJPvSQ" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://www.cloudlyrics.org; media-src 'self'; script-src 'none'; frame-src 'none'; object-src 'none';" />
+  <title>CloudLyrics 4.0 — Synced Lyrics & Community Comments for SoundCloud</title>
+
+  <!-- Primary SEO -->
+  <meta name="description" content="CloudLyrics 4.0 brings synced lyrics and real SoundCloud community comments to every track. Free Chrome and Firefox extension — full-screen overlay, ambient visuals, and the comments SoundCloud was always famous for." />
+  <meta name="keywords" content="SoundCloud lyrics, synced lyrics Chrome extension, SoundCloud extension, lyrics overlay, music lyrics browser extension" />
+  <meta name="author" content="CloudLyrics" />
+  <link rel="canonical" href="https://www.cloudlyrics.org/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.cloudlyrics.org/" />
+  <meta property="og:site_name" content="CloudLyrics" />
+  <meta property="og:title" content="CloudLyrics 4.0 — Synced Lyrics & Community Comments for SoundCloud" />
+  <meta property="og:description" content="Finally — synced lyrics on SoundCloud, with the community comments that made SoundCloud famous. Free Chrome and Firefox extension." />
+  <meta property="og:image" content="https://www.cloudlyrics.org/preview.png" />
+
+  <!-- Twitter / X Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="CloudLyrics 4.0 — Synced Lyrics & Community Comments for SoundCloud" />
+  <meta name="twitter:description" content="Synced lyrics + SoundCloud's famous timed comments, shown right below the lyric they were left on. Free. Chrome & Firefox." />
+  <meta name="twitter:image" content="https://www.cloudlyrics.org/preview.png" />
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "CloudLyrics",
+    "description": "Synced lyrics for SoundCloud. Full-screen overlay, ambient visuals, artist info, and lyric sharing.",
+    "applicationCategory": "BrowserApplication",
+    "applicationSubCategory": "Music",
+    "operatingSystem": "Chrome",
+    "softwareVersion": "4.0",
+    "screenshot": "https://www.cloudlyrics.org/preview.png",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "url": "https://chromewebstore.google.com/detail/jbdcddljoojojilncpkkbpignjabnmfa",
+    "sameAs": [
+      "https://chromewebstore.google.com/detail/jbdcddljoojojilncpkkbpignjabnmfa"
+    ],
+    "author": {
+      "@type": "Person",
+      "name": "coolnerdave",
+      "url": "https://ko-fi.com/coolnerdave"
+    }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange: #ff5500;
+      --orange-dim: rgba(255, 85, 0, 0.12);
+      --orange-glow: rgba(255, 85, 0, 0.35);
+      --bg: #0a0a0a;
+      --bg-2: #111111;
+      --bg-3: #181818;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.18);
+      --text: #f0f0f0;
+      --text-muted: rgba(255, 255, 255, 0.45);
+      --text-dim: rgba(255, 255, 255, 0.22);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Manrope', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── Noise grain overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.6;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 48px;
+      background: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-logo-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--orange);
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 400;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta {
+      background: var(--orange);
+      color: #fff !important;
+      padding: 9px 20px;
+      border-radius: 100px;
+      font-weight: 500 !important;
+      font-size: 14px !important;
+      transition: background 0.2s, box-shadow 0.2s !important;
+    }
+
+    .nav-cta:hover {
+      background: #e64d00 !important;
+      box-shadow: 0 4px 20px var(--orange-glow);
+    }
+
+    /* ── Hero — two-column split ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      align-items: center;
+      gap: clamp(48px, 5vw, 80px);
+      padding: 96px 56px 64px;
+      max-width: 1320px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+
+    /* Orange glow anchored behind the left column */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 30%;
+      left: 0;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(255,85,0,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Left column */
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border: 1px solid rgba(255, 85, 0, 0.35);
+      border-radius: 100px;
+      background: var(--orange-dim);
+      color: var(--orange);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--orange);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.75); }
+    }
+
+    .hero-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(38px, 4.8vw, 68px);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+
+    .hero-title span { color: var(--orange); }
+
+    .hero-sub {
+      font-size: clamp(14px, 1.4vw, 17px);
+      font-weight: 300;
+      color: var(--text-muted);
+      max-width: 380px;
+      margin-bottom: 36px;
+      line-height: 1.6;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--orange);
+      color: #fff;
+      text-decoration: none;
+      padding: 15px 32px;
+      border-radius: 100px;
+      font-size: 16px;
+      font-weight: 500;
+      transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+      box-shadow: 0 4px 30px var(--orange-glow);
+    }
+
+    .btn-primary:hover {
+      background: #e64d00;
+      box-shadow: 0 6px 40px rgba(255,85,0,0.5);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 15px 28px;
+      border-radius: 100px;
+      font-size: 15px;
+      border: 1px solid var(--border);
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .btn-secondary:hover {
+      color: var(--text);
+      border-color: var(--border-hover);
+    }
+
+    /* ── Screen mockup — right column ── */
+    .hero-visual {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-screen {
+      width: 100%;
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow:
+        0 48px 120px rgba(0,0,0,0.7),
+        0 0 0 1px var(--border),
+        0 0 80px rgba(110, 30, 200, 0.12);
+    }
+
+    .screen-bar {
+      background: var(--bg-3);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .screen-dots { display: flex; gap: 6px; }
+
+    .screen-dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--border-hover);
+    }
+
+    .screen-url {
+      flex: 1;
+      background: rgba(255,255,255,0.05);
+      border-radius: 6px;
+      padding: 5px 12px;
+      font-size: 12px;
+      color: var(--text-dim);
+      text-align: center;
+    }
+
+    .demo-video {
+      width: 100%;
+      display: block;
+      border-radius: 0 0 16px 16px;
+    }
+
+
+    /* ── Features ── */
+    .section {
+      padding: 100px 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(32px, 5vw, 52px);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      color: var(--text);
+      margin-bottom: 64px;
+      max-width: 560px;
+    }
+
+    /* Clean grid — radius on the container, not individual cards */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .feature-card {
+      background: var(--bg-2);
+      padding: 36px 32px;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card:hover { background: var(--bg-3); }
+
+    .feature-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--orange-dim);
+      border: 1px solid rgba(255,85,0,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .feature-icon svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--orange);
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .feature-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--text);
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+
+    .feature-desc {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ── How it works ── */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 28px;
+      padding: 32px 36px;
+      background: var(--bg-2);
+      transition: background 0.2s;
+    }
+
+    .step:hover { background: var(--bg-3); }
+
+    .step-num {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 36px;
+      color: var(--text-dim);
+      line-height: 1;
+      flex-shrink: 0;
+      width: 36px;
+    }
+
+    .step-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 17px;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .step-desc {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ── CTA section ── */
+    .cta-section {
+      padding: 80px 24px 120px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(255,85,0,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .cta-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(36px, 6vw, 64px);
+      letter-spacing: -0.04em;
+      line-height: 1;
+      color: var(--text);
+      margin-bottom: 24px;
+    }
+
+    .cta-sub {
+      font-size: 17px;
+      font-weight: 300;
+      color: var(--text-muted);
+      margin-bottom: 48px;
+      line-height: 1.55;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 15px;
+      color: var(--text-muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--text-muted); }
+
+    kbd {
+      display: inline-block;
+      padding: 1px 7px;
+      border-radius: 5px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.07);
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      vertical-align: middle;
+    }
+
+    #getting-started { scroll-margin-top: 80px; }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 100px 32px 64px;
+        text-align: center;
+        gap: 48px;
+      }
+      .hero::after { left: 50%; transform: translateX(-50%); }
+      .hero-content { align-items: center; }
+      .hero-sub { max-width: 520px; }
+      .hero-actions { justify-content: center; }
+    }
+
+    @media (max-width: 640px) {
+      nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+      .hero { padding: 88px 20px 56px; }
+      .section { padding: 64px 20px; }
+      footer { padding: 24px 20px; }
+      .step { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <a href="#" class="nav-logo">
+      <span class="nav-logo-dot"></span>
+      CloudLyrics
+    </a>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#getting-started">Get started</a></li>
+      <li><a href="https://chromewebstore.google.com/detail/jbdcddljoojojilncpkkbpignjabnmfa?utm_source=item-share-cb" class="nav-cta" target="_blank" rel="noopener">Add to Chrome</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+
+    <!-- Left: vision + CTA -->
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        v4.0 · Chrome &amp; Firefox · Free
+      </div>
+
+      <h1 class="hero-title">
+        Lyrics. Comments.<br><span>SoundCloud, complete.</span>
+      </h1>
+
+      <p class="hero-sub">
+        Synced lyrics for every SoundCloud track — and the community comments that made SoundCloud famous, shown right below the line they were left on.
+      </p>
+
+      <div class="hero-actions">
+        <a href="https://chromewebstore.google.com/detail/jbdcddljoojojilncpkkbpignjabnmfa?utm_source=item-share-cb" class="btn-primary" id="install" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Add to Chrome — it's free
+        </a>
+      </div>
+    </div>
+
+    <!-- Right: real extension demo video -->
+    <div class="hero-visual">
+      <div class="hero-screen">
+        <video class="demo-video" autoplay muted loop playsinline>
+          <source src="demo.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Features -->
+  <section class="section" id="features">
+    <p class="section-label">What's new in 4.0</p>
+    <h2 class="section-title">The thing SoundCloud never built.</h2>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="feature-title">Synced lyrics</div>
+        <div class="feature-desc">Lines highlight in real time as the track plays. Sub-second precision, smooth scale and glow. Click any line to seek to that moment.</div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div class="feature-title">Community comments</div>
+        <div class="feature-desc">SoundCloud's famous timed comments appear as quiet annotations below the lyric line they were left on. The crowd becomes part of the song.</div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" opacity="0.3"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10"/><path d="M12 2c3 3 4 6 4 10s-1 7-4 10"/><path d="M2 12h20"/></svg>
+        </div>
+        <div class="feature-title">Ambient background</div>
+        <div class="feature-desc">Soft colour blobs drift behind your lyrics, derived from the album art. Every track looks and feels different — the background is alive.</div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+        </div>
+        <div class="feature-title">Full-screen mode</div>
+        <div class="feature-desc">Press <kbd>F</kbd> from anywhere on SoundCloud to fill your screen with lyrics. Press again to close. Press <kbd>C</kbd> to copy the active line.</div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+        </div>
+        <div class="feature-title">Art styles</div>
+        <div class="feature-desc">Spinning vinyl with live tonearm, iridescent CD, rotating 3D cube, or an official music video alongside. Album art, your way.</div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        </div>
+        <div class="feature-title">Instant lyrics</div>
+        <div class="feature-desc">Cached after first load — lyrics appear instantly on every revisit. Searches LRCLib and lyrics.ovh automatically. Synced or plain, it finds them.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="section" id="how" style="padding-top: 0;">
+    <p class="section-label">Setup</p>
+    <h2 class="section-title">Three steps to never missing a word.</h2>
+
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">01</span>
+        <div class="step-content">
+          <div class="step-title">Install the extension</div>
+          <div class="step-desc">Add CloudLyrics to Chrome from the Web Store. No account, no sign-up, no data collected.</div>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">02</span>
+        <div class="step-content">
+          <div class="step-title">Open SoundCloud and play anything</div>
+          <div class="step-desc">CloudLyrics detects the track and fetches lyrics automatically. When they're ready, a panel appears — no button hunting required.</div>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">03</span>
+        <div class="step-content">
+          <div class="step-title">Press <kbd>F</kbd></div>
+          <div class="step-desc">One key fills your screen with synced lyrics and a living ambient background. Press <kbd>F</kbd> again to dismiss. That's it.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Getting Started -->
+  <section class="section" id="getting-started">
+    <p class="section-label">Welcome</p>
+    <h2 class="section-title">You're set up. Here's what to do first.</h2>
+
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">01</span>
+        <div class="step-content">
+          <div class="step-title">Head to SoundCloud and play a track</div>
+          <div class="step-desc">CloudLyrics wakes up automatically — no setup, no sign-in. It starts finding lyrics the moment the track starts.</div>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">02</span>
+        <div class="step-content">
+          <div class="step-title">Press <kbd>F</kbd> to open fullscreen</div>
+          <div class="step-desc">Synced lyrics with a soft ambient colour background, derived from the album art. Press <kbd>F</kbd> again — or <kbd>Esc</kbd> — to close. The orange floating button works too.</div>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">03</span>
+        <div class="step-content">
+          <div class="step-title">Click any lyric line to seek</div>
+          <div class="step-desc">When lyrics are synced, clicking a line jumps the track to that exact moment. Hit <strong>Snippet</strong> in the header to save it as an image.</div>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">04</span>
+        <div class="step-content">
+          <div class="step-title">Make it yours</div>
+          <div class="step-desc">Open the <strong>Style</strong> menu to choose an art style — Vinyl, CD, Cube, or Video. Enable <strong>Comments</strong> to see community annotations. Switch ambience or lyrics theme in <strong>Premium</strong>.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="cta-inner">
+      <h2 class="cta-title">SoundCloud finally has lyrics.</h2>
+      <p class="cta-sub">Free to install. No account. Works on every public track.<br>Chrome and Firefox. Optional premium for extra visual styles.</p>
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+        <a href="https://chromewebstore.google.com/detail/jbdcddljoojojilncpkkbpignjabnmfa?utm_source=item-share-cb" class="btn-primary" style="font-size: 17px; padding: 17px 40px;" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Add to Chrome
+        </a>
+        <a href="https://addons.mozilla.org/firefox/addon/cloudlyrics/" class="btn-secondary" style="font-size: 17px; padding: 17px 40px;" target="_blank" rel="noopener">
+          Add to Firefox
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <a href="#" class="footer-logo">
+      <span class="nav-logo-dot"></span>
+      CloudLyrics
+    </a>
+    <ul class="footer-links">
+      <li></li>
+      <li><a href="https://ko-fi.com/coolnerdave" target="_blank" rel="noopener">Support</a></li>
+      <li><a href="https://chromewebstore.google.com/detail/jbdcddljoojojilncpkkbpignjabnmfa" target="_blank" rel="noopener">Chrome Web Store</a></li>
+    </ul>
+  </footer>
+
+
+</body>
+</html>

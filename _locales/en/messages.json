@@ -1,0 +1,49 @@
+{
+  "appName":        { "message": "CloudLyrics - Full Screen Lyrics for SoundCloud" },
+  "appDescription": { "message": "Shows synced lyrics for any SoundCloud track. Full-screen overlay, artist info, art styles, and lyric sharing." },
+
+  "btnLyrics":       { "message": "Lyrics" },
+  "btnArt":          { "message": "Art" },
+  "btnShareSnippet": { "message": "Share snippet" },
+  "btnStyle":        { "message": "Style ▾" },
+  "btnImmerse":      { "message": "Immerse" },
+  "btnExitImmerse":  { "message": "Exit Immerse" },
+  "btnClose":        { "message": "Close" },
+  "btnFullscreen":   { "message": "Full screen" },
+  "btnMinimize":     { "message": "Minimize" },
+  "btnDismiss":      { "message": "Dismiss" },
+  "btnOpenLyrics":   { "message": "Open lyrics" },
+  "btnReturn":       { "message": "Return" },
+
+  "ariaBack":    { "message": "Back 10 seconds" },
+  "ariaPause":   { "message": "Pause scroll" },
+  "ariaForward": { "message": "Forward 10 seconds" },
+  "ariaSlower":  { "message": "Slower" },
+  "ariaFaster":  { "message": "Faster" },
+
+  "aboutArtist":   { "message": "About the artist" },
+  "aboutTrack":    { "message": "About the track" },
+  "linkWikipedia": { "message": "Read more on Wikipedia →" },
+  "linkLastfm":    { "message": "Read more on Last.fm →" },
+  "linkMoreWiki":  { "message": "More on Wikipedia →" },
+  "supportKofi":   { "message": "Support CloudLyrics on Ko-Fi ☕" },
+
+  "upgradeBadge":    { "message": "Premium" },
+  "upgradeTitle":    { "message": "CloudLyrics Premium" },
+  "upgradeDesc":     { "message": "Unlock the full experience — one-time payment, yours forever." },
+  "upgradeFeature1": { "message": "Synthwave, Embers, Sakura & Snow visualisations" },
+  "upgradeFeature2": { "message": "Blur, Glitch, Spotlight, Typewriter & more lyrics themes" },
+  "upgradeFeature3": { "message": "Lifetime access — no subscription" },
+  "upgradeBtn":      { "message": "Unlock Premium — £3.99" },
+  "upgradeHaveKey":  { "message": "Already have a key?" },
+  "upgradeActivate": { "message": "Activate" },
+
+  "vizLiquid":       { "message": "Liquid" },
+
+  "lyricsReady":     { "message": "Lyrics ready" },
+  "snippetCancel":   { "message": "Cancel" },
+  "snippetCopy":     { "message": "Copy" },
+  "snippetPostX":    { "message": "Post on X" },
+  "snippetDownload": { "message": "Download" },
+  "snippetShare":    { "message": "Share" }
+}
