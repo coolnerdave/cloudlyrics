@@ -785,7 +785,7 @@
       <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
         <a href="https://chromewebstore.google.com/detail/jbdcddljoojojilncpkkbpignjabnmfa?utm_source=item-share-cb" class="btn-primary" id="cta-chrome-btn" style="font-size: 17px; padding: 17px 40px;" target="_blank" rel="noopener">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Add to Chrome
+          <span id="cta-chrome-label">Add to Chrome</span>
         </a>
         <a href="https://addons.mozilla.org/addon/cloudlyrics/" class="btn-secondary" id="cta-firefox-btn" style="font-size: 17px; padding: 17px 40px;" target="_blank" rel="noopener">
           Add to Firefox
@@ -809,22 +809,39 @@
 
   <script>
     (function () {
-      if (!/Firefox\//.test(navigator.userAgent)) return;
-      var FF = 'https://addons.mozilla.org/addon/cloudlyrics/';
+      var ua = navigator.userAgent;
+      var isFirefox = /Firefox\//.test(ua);
+      // Edge, Brave, Opera, Arc etc. all carry "Chrome/" but add their own marker
+      var isChrome = !isFirefox && /Chrome\//.test(ua) && !/Edg\//.test(ua) && !/OPR\//.test(ua) && !/SamsungBrowser/.test(ua);
+      var isOtherChromium = !isFirefox && !isChrome;
 
-      var nav = document.getElementById('nav-install-btn');
-      if (nav) { nav.href = FF; nav.querySelector('span').textContent = 'Add to Firefox'; }
+      var FF  = 'https://addons.mozilla.org/addon/cloudlyrics/';
 
-      var hero = document.getElementById('install');
-      if (hero) { hero.href = FF; document.getElementById('install-label').textContent = "Add to Firefox — it's free"; }
+      if (isFirefox) {
+        var nav = document.getElementById('nav-install-btn');
+        if (nav) { nav.href = FF; nav.querySelector('span').textContent = 'Add to Firefox'; }
 
-      var chrome = document.getElementById('cta-chrome-btn');
-      var ff = document.getElementById('cta-firefox-btn');
-      if (chrome && ff) {
-        chrome.className = chrome.className.replace('btn-primary', 'btn-secondary');
-        ff.className = ff.className.replace('btn-secondary', 'btn-primary');
-        chrome.parentNode.insertBefore(ff, chrome);
+        var hero = document.getElementById('install');
+        if (hero) { hero.href = FF; document.getElementById('install-label').textContent = "Add to Firefox — it's free"; }
+
+        var chromeBtn = document.getElementById('cta-chrome-btn');
+        var ffBtn = document.getElementById('cta-firefox-btn');
+        if (chromeBtn && ffBtn) {
+          chromeBtn.className = chromeBtn.className.replace('btn-primary', 'btn-secondary');
+          ffBtn.className = ffBtn.className.replace('btn-secondary', 'btn-primary');
+          chromeBtn.parentNode.insertBefore(ffBtn, chromeBtn);
+        }
+      } else if (isOtherChromium) {
+        var nav = document.getElementById('nav-install-btn');
+        if (nav) { nav.querySelector('span').textContent = 'Chrome Web Store'; }
+
+        var label = document.getElementById('install-label');
+        if (label) { label.textContent = "Get from Chrome Web Store — it's free"; }
+
+        var ctaLabel = document.getElementById('cta-chrome-label');
+        if (ctaLabel) { ctaLabel.textContent = 'Chrome Web Store'; }
       }
+      // isChrome: default "Add to Chrome" text is already correct
     })();
   </script>
 </body>
