@@ -613,7 +613,7 @@
       <li><a href="#features">Features</a></li>
       <li><a href="#how">How it works</a></li>
       <li><a href="#getting-started">Get started</a></li>
-      <li><a href="https://chromewebstore.google.com/detail/jbdcddljoojojilncpkkbpignjabnmfa?utm_source=item-share-cb" class="nav-cta" target="_blank" rel="noopener">Add to Chrome</a></li>
+      <li><a href="https://chromewebstore.google.com/detail/jbdcddljoojojilncpkkbpignjabnmfa?utm_source=item-share-cb" class="nav-cta" id="nav-install-btn" target="_blank" rel="noopener"><span>Add to Chrome</span></a></li>
     </ul>
   </nav>
 
@@ -638,7 +638,7 @@
       <div class="hero-actions">
         <a href="https://chromewebstore.google.com/detail/jbdcddljoojojilncpkkbpignjabnmfa?utm_source=item-share-cb" class="btn-primary" id="install" target="_blank" rel="noopener">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Add to Chrome — it's free
+          <span id="install-label">Add to Chrome — it's free</span>
         </a>
       </div>
     </div>
@@ -783,11 +783,11 @@
       <h2 class="cta-title">SoundCloud finally has lyrics.</h2>
       <p class="cta-sub">Free to install. No account. Works on every public track.<br>Chrome and Firefox. Optional premium for extra visual styles.</p>
       <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
-        <a href="https://chromewebstore.google.com/detail/jbdcddljoojojilncpkkbpignjabnmfa?utm_source=item-share-cb" class="btn-primary" style="font-size: 17px; padding: 17px 40px;" target="_blank" rel="noopener">
+        <a href="https://chromewebstore.google.com/detail/jbdcddljoojojilncpkkbpignjabnmfa?utm_source=item-share-cb" class="btn-primary" id="cta-chrome-btn" style="font-size: 17px; padding: 17px 40px;" target="_blank" rel="noopener">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Add to Chrome
         </a>
-        <a href="https://addons.mozilla.org/firefox/addon/cloudlyrics/" class="btn-secondary" style="font-size: 17px; padding: 17px 40px;" target="_blank" rel="noopener">
+        <a href="https://addons.mozilla.org/addon/cloudlyrics/" class="btn-secondary" id="cta-firefox-btn" style="font-size: 17px; padding: 17px 40px;" target="_blank" rel="noopener">
           Add to Firefox
         </a>
       </div>
@@ -807,6 +807,25 @@
     </ul>
   </footer>
 
+  <script>
+    (function () {
+      if (!/Firefox\//.test(navigator.userAgent)) return;
+      var FF = 'https://addons.mozilla.org/addon/cloudlyrics/';
 
+      var nav = document.getElementById('nav-install-btn');
+      if (nav) { nav.href = FF; nav.querySelector('span').textContent = 'Add to Firefox'; }
+
+      var hero = document.getElementById('install');
+      if (hero) { hero.href = FF; document.getElementById('install-label').textContent = "Add to Firefox — it's free"; }
+
+      var chrome = document.getElementById('cta-chrome-btn');
+      var ff = document.getElementById('cta-firefox-btn');
+      if (chrome && ff) {
+        chrome.className = chrome.className.replace('btn-primary', 'btn-secondary');
+        ff.className = ff.className.replace('btn-secondary', 'btn-primary');
+        chrome.parentNode.insertBefore(ff, chrome);
+      }
+    })();
+  </script>
 </body>
 </html>
