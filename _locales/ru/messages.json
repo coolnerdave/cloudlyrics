@@ -28,16 +28,6 @@
   "linkMoreWiki":  { "message": "Ещё на Wikipedia →" },
   "supportKofi":   { "message": "Поддержать CloudLyrics на Ko-Fi ☕" },
 
-  "upgradeBadge":    { "message": "Premium" },
-  "upgradeTitle":    { "message": "CloudLyrics Premium" },
-  "upgradeDesc":     { "message": "Разблокируй полный опыт — единоразовый платёж, навсегда." },
-  "upgradeFeature1": { "message": "Визуализации Synthwave, Embers, Sakura и Snow" },
-  "upgradeFeature2": { "message": "Темы Blur, Glitch, Spotlight, Typewriter и другие" },
-  "upgradeFeature3": { "message": "Пожизненный доступ — без подписки" },
-  "upgradeBtn":      { "message": "Разблокировать Premium — £3.99" },
-  "upgradeHaveKey":  { "message": "Уже есть ключ?" },
-  "upgradeActivate": { "message": "Активировать" },
-
   "vizLiquid":       { "message": "Жидкость" },
 
   "lyricsReady":     { "message": "Текст готов" },

@@ -28,16 +28,6 @@
   "linkMoreWiki":  { "message": "More on Wikipedia →" },
   "supportKofi":   { "message": "Support CloudLyrics on Ko-Fi ☕" },
 
-  "upgradeBadge":    { "message": "Premium" },
-  "upgradeTitle":    { "message": "CloudLyrics Premium" },
-  "upgradeDesc":     { "message": "Unlock the full experience — one-time payment, yours forever." },
-  "upgradeFeature1": { "message": "Synthwave, Reactions, Sakura & Snow visualisations" },
-  "upgradeFeature2": { "message": "Glitch, Spotlight & Typewriter lyrics themes" },
-  "upgradeFeature3": { "message": "Lifetime access — no subscription" },
-  "upgradeBtn":      { "message": "Unlock Premium — £3.99" },
-  "upgradeHaveKey":  { "message": "Already have a key?" },
-  "upgradeActivate": { "message": "Activate" },
-
   "vizLiquid":       { "message": "Liquid" },
 
   "lyricsReady":     { "message": "Lyrics ready" },
