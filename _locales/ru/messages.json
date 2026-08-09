@@ -7,7 +7,6 @@
   "btnShareSnippet": { "message": "Сниппет" },
   "btnStyle":        { "message": "Стиль ▾" },
   "btnImmerse":      { "message": "Погружение" },
-  "btnExitImmerse":  { "message": "Выйти" },
   "btnClose":        { "message": "Закрыть" },
   "btnFullscreen":   { "message": "На весь экран" },
   "btnMinimize":     { "message": "Свернуть" },

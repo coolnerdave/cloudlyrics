@@ -7,7 +7,6 @@
   "btnShareSnippet": { "message": "Share snippet" },
   "btnStyle":        { "message": "Style ▾" },
   "btnImmerse":      { "message": "Immerse" },
-  "btnExitImmerse":  { "message": "Exit Immerse" },
   "btnClose":        { "message": "Close" },
   "btnFullscreen":   { "message": "Full screen" },
   "btnMinimize":     { "message": "Minimize" },
