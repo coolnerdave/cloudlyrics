@@ -13,7 +13,7 @@ echo "Building Firefox package..."
 
 # Copy all extension files to tmp dir
 rsync -a \
-  --exclude='.git' --exclude='.agents' --exclude='.claude' \
+  --exclude='.git' --exclude='.git-source' --exclude='.gitignore' --exclude='.agents' --exclude='.claude' --exclude='welcome' \
   --exclude='*.sh' --exclude='*.py' --exclude='*.command' \
   --exclude='HANDOFF.md' --exclude='CLAUDE.md' --exclude='PROMPTER_NOTES.md' \
   --exclude='cloudlyrics-bot' --exclude='*.zip' --exclude='build' \
